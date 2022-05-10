@@ -1,27 +1,22 @@
 const router = require("express").Router();
-const { getNotes, postNotes } = require("../../lib/notes.js")
-const { notes } = require('../../db/db.json');
+const { getNotes, deleteNotes, createNotes } = require("../../lib/notes.js")
 
-// router.get('/notes',(req, res) => {
-//     let results = notes;
-//     if (req.query) { 
-//         results = getNotes(req.query, results);
-//     }
-//     console.log(results);
-//     res.json(results);
-// });
-
+// Get current notes
 router.get('/notes', (req, res) => {
     let results = getNotes();
     res.json(results);
 })
 
-// router.post('/notes', (req, res) => {
-//     let results = postNotes();
-//     // req.body.id = notes.length.toString();
-//     console.log(results)
-//     // console.log(res)
-//     // console.log("teste")
-// })
+// Save new note
+router.post("/notes", (req, res) => {
+    createNotes(req.body);
+    res.json(getNotes());
+});
+
+// Delete note
+router.delete("/notes/:id", (req, res) => {
+    deleteNotes(req.params.id);
+    res.json(getNotes());
+})
 
 module.exports = router;
